@@ -1,24 +1,37 @@
 // Imports
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { login } from "../store/features/authSlice";
 
 // Component
 const Auth = () => {
 
+	// Dispatch
+	const dispatch = useDispatch();
+
+	// Submit form
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		dispatch(login());
+	};
+
 	// Return
 	return(
-		<Wrapper>
+		<Wrapper onSubmit={ handleSubmit }>
 			<section>
 				<form>
 					<div className="control">
 						<label htmlFor='email'>Email</label>
-						<input type='email' id='email' />
+						<input type='email' id='email' required />
 					</div>
 					<div className="control">
 						<label htmlFor='password'>Password</label>
-						<input type='password' id='password' />
+						<input type='password' id='password' required />
 					</div>
-					<button>Login</button>
+					<button type="submit">
+						Login
+					</button>
 				</form>
 			</section>
 		</Wrapper>

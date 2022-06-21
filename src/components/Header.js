@@ -1,21 +1,35 @@
 // Imports
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { logout } from "../store/features/authSlice";
 
 // Component
 const Header = () => {
+
+	// Store variables
+	const { isAuth } = useSelector((store) => { return store.auth });
+
+	// Dispatch actions
+	const dispatch = useDispatch();
 
 	// Return
 	return(
 		<Wrapper>
 			<h1>Redux Auth</h1>
-			<nav>
-				<ul>
-					<li><a href='/'>My Products</a></li>
-					<li><a href='/'>My Sales</a></li>
-					<li><button>Logout</button></li>
-				</ul>
-			</nav>
+			{
+				isAuth && <nav>
+					<ul>
+						<li><a href='/'>My Products</a></li>
+						<li><a href='/'>My Sales</a></li>
+						<li>
+							<button type="button" onClick={ () => { dispatch(logout()); } }>
+								Logout
+							</button>
+						</li>
+					</ul>
+				</nav>
+			}
 		</Wrapper>
 	);
 

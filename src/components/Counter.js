@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement, increaseByValue, toggleCounter } from "../store/store";
+import { increment, decrement, increaseByValue, toggleCounter } from "../store/features/counterSlice";
 
 /* Technically, Counter must use local state (useState), 
 because counter and hide/show counter is only use here ,-) */
