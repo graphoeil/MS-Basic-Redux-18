@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { INCREMENT, INCREASE_BY_VALUE, DECREMENT, TOGGLE_COUNTER } from "../store/store";
+import { increment, decrement, increaseByValue, toggleCounter } from "../store/store";
 
 /* Technically, Counter must use local state (useState), 
 because counter and hide/show counter is only use here ,-) */
@@ -11,32 +11,20 @@ because counter and hide/show counter is only use here ,-) */
 const Counter = () => {
 
 	// Redux store
-	/* useSelector create a subscription between this component and the store, 
-	then when the store will be updated, this component will receive the latest 
-	snapshot of the state. */
-	const counter = useSelector((state) => {
-		return state.counter;
-	});
-	const showCounter = useSelector((state) => {
-		return state.showCounter;
-	});
+	const { counter, showCounter } = useSelector((store) => { return store.counter; });
 
 	// Dispatch actions to redux store
 	const dispatch = useDispatch();
 
 	// Methods
-	const increment = () => {
-		dispatch({ type:INCREMENT });
+	const handleIncrement = () => {
+		dispatch(increment());
 	};
-	const increaseByValue = (value) => {
-		// Payload => the actual information or message in transmitted data.
-		dispatch({ type:INCREASE_BY_VALUE, payload:5 });
+	const handleDecrement = () => {
+		dispatch(decrement());
 	};
-	const decrement = () => {
-		dispatch({ type:DECREMENT });
-	};
-	const toggleCounter = () => {
-		dispatch({ type:TOGGLE_COUNTER });
+	const handleToggleCounter = () => {
+		dispatch(toggleCounter());
 	};
 
 	// Return
@@ -47,17 +35,17 @@ const Counter = () => {
 				showCounter && <div>-- { counter } --</div>
 			}
 			<div className="marginLess">
-				<button onClick={ increment }>
+				<button onClick={ handleIncrement }>
 					Increment
 				</button>
-				<button onClick={ () => { increaseByValue(5); } }>
+				<button onClick={ () => { dispatch(increaseByValue(5)); } }>
 					Increase by 5
 				</button>
-				<button onClick={ decrement }>
+				<button onClick={ handleDecrement }>
 					Decrement
 				</button>
 			</div>
-			<button onClick={ toggleCounter }>Toggle Counter</button>
+			<button onClick={ handleToggleCounter }>Toggle Counter</button>
 		</Wrapper>
 	);
 

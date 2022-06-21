@@ -1,11 +1,5 @@
 // Imports
-import { createStore } from "redux";
-
-// Actions
-export const INCREMENT = 'INCREMENT';
-export const INCREASE_BY_VALUE = 'INCREASE_BY_VALUE';
-export const DECREMENT = 'DECREMENT';
-export const TOGGLE_COUNTER = 'TOGGLE_COUNTER';
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 // Initial state
 const initialState = {
@@ -13,30 +7,49 @@ const initialState = {
 	showCounter:true
 };
 
-// Reducer
-const counterReducer = (state = initialState, action) => {
-	// Increment
-	if (action.type === INCREMENT){
-		return { ...state, counter:state.counter + 1 };
+// Slice
+const counterSlice = createSlice({
+	name:'counter',
+	initialState,
+	reducers:{
+		// Increment
+		increment:(state) => {
+			/* Redux toolkit use immer, immer detect state mutations 
+			and return a new state with the updated property ,-) */
+			state.counter++;
+		},
+		// Decrement
+		decrement:(state) => {
+			return {
+				...state,
+				counter:state.counter - 1
+			};
+		},
+		// Increase by value
+		increaseByValue:(state, action) => {
+			// state.counter = state.counter + action.payload;
+			state.counter += action.payload;
+		},
+		// Toggle counter
+		toggleCounter:(state) => {
+			return {
+				...state,
+				showCounter:!state.showCounter
+			};
+		}
 	}
-	// Increase by value
-	if (action.type === INCREASE_BY_VALUE){
-		return { ...state, counter:state.counter + action.payload };
-	};
-	// Decrement
-	if (action.type === DECREMENT){
-		return { ...state, counter:state.counter - 1 };
-	}
-	// Toggle counter
-	if (action.type === TOGGLE_COUNTER){
-		return { ...state, showCounter:!state.showCounter };
-	}
-	// Default
-	return state;
-};
+});
+
+// Actions, destructuring counterSlice.actions
+export const { increment, decrement, increaseByValue, 
+	toggleCounter } = counterSlice.actions;
 
 // Store
-const store = createStore(counterReducer);
+const store = configureStore({
+	reducer:{
+		counter:counterSlice.reducer
+	}
+})
 
 // Export
 export default store;
